@@ -47,15 +47,15 @@ public class Cell {
     }
 
     public boolean isChecked() {
-        return isFlagged || isOpened;
+        return this.isFlagged || this.isOpened;
     }
 
     public boolean isLandMine() {
-        return isLandMine;
+        return this.isLandMine;
     }
 
     public boolean isOpened() {
-        return isOpened;
+        return this.isOpened;
     }
 
     public boolean hasLandMineCount() {
