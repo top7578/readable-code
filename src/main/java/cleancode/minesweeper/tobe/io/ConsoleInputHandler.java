@@ -3,7 +3,7 @@ package cleancode.minesweeper.tobe.io;
 import java.util.Scanner;
 
 
-public class ConsoleInputHandler {
+public class ConsoleInputHandler implements InputHandler {
 
     public static final Scanner SCANNER = new Scanner(System.in);
 
