@@ -1,10 +1,12 @@
 package cleancode.minesweeper.tobe;
 
+import cleancode.minesweeper.tobe.cell.Cell;
 import cleancode.minesweeper.tobe.game.GameInitializable;
 import cleancode.minesweeper.tobe.game.GameRunnable;
 import cleancode.minesweeper.tobe.gameLevel.GameLevel;
 import cleancode.minesweeper.tobe.io.InputHandler;
 import cleancode.minesweeper.tobe.io.OutputHandler;
+import cleancode.minesweeper.tobe.position.CellPosition;
 
 
 public class Minesweeper implements GameInitializable, GameRunnable {
@@ -44,7 +46,7 @@ public class Minesweeper implements GameInitializable, GameRunnable {
                     break;
                 }
 
-                String cellInput = getCellInputFromUser();
+                CellPosition cellInput = getCellInputFromUser();
                 String userActionInput = getUserActionInputFromUser();
                 actOnCell(cellInput, userActionInput);
             } catch (GameException e) {
@@ -55,12 +57,12 @@ public class Minesweeper implements GameInitializable, GameRunnable {
         }
     }
 
-    private void actOnCell(String cellInput, String userActionInput) {
-        int selectedColIndex = boardIndexConverter.getSelectedColIndex(cellInput, gameBoard.getColSize());
-        int selectedRowIndex = boardIndexConverter.getSelectedRowIndex(cellInput, gameBoard.getRowSize());
+    private void actOnCell(Cell cellPosition, String userActionInput) {
+//        int selectedColIndex = boardIndexConverter.getSelectedColIndex(cellInput);
+//        int selectedRowIndex = boardIndexConverter.getSelectedRowIndex(cellInput);
 
         if (doesUserChooseToPlantFlag(userActionInput)) {
-            gameBoard.flag(selectedRowIndex, selectedColIndex);
+            gameBoard.flagAt(cellPosition);
             checkIfGameIsOver();
             return;
         }
@@ -99,9 +101,13 @@ public class Minesweeper implements GameInitializable, GameRunnable {
         return inputHandler.getUserInput();
     }
 
-    private String getCellInputFromUser() {
+    private CellPosition getCellInputFromUser() {
         outputHandler.showCommentForSelectingCell();
-        return inputHandler.getUserInput();
+        CellPosition cellPosition = inputHandler.getCellPositionFromUser();
+        if (gameBoard.isInvalidCellPosition(cellPosition)) {
+            throw new GameException("잘못된 좌표를 선택하셨습니다.");
+        }
+        return inputHandler.getCellPositionFromUser();
     }
 
     private boolean doesUserLoseTheGame() {

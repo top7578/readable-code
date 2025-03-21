@@ -5,6 +5,7 @@ import cleancode.minesweeper.tobe.cell.EmptyCell;
 import cleancode.minesweeper.tobe.cell.LandMineCell;
 import cleancode.minesweeper.tobe.cell.NumberCell;
 import cleancode.minesweeper.tobe.gameLevel.GameLevel;
+import cleancode.minesweeper.tobe.position.CellPosition;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -64,8 +65,8 @@ public class GameBoard {
         return cell.getSign();
     }
 
-    public void flag(int rowIndex, int colIndex) {
-        findCell(rowIndex, colIndex).flag();
+    public void flagAt(CellPosition cellPosition) {
+        findCell(cellPosition).flag();
     }
 
     public boolean isLandMineCell(int rowIndex, int colIndex) {
@@ -108,6 +109,13 @@ public class GameBoard {
                 .allMatch(Cell::isChecked);
     }
 
+    public boolean isInvalidCellPosition(CellPosition cellPosition) {
+        int rowSize = getRowSize();
+        int colSize = getColSize();
+
+        return cellPosition.isRowIndexMoreThanOrEqual(rowSize) || cellPosition.isColIndexMoreThanOrEqual(colSize);
+    }
+
     private boolean doesCellHaveLandMineCount(int row, int col) {
         return findCell(row, col).hasLandMineCount();
     }
@@ -116,8 +124,8 @@ public class GameBoard {
         return findCell(row, col).isOpened();
     }
 
-    private Cell findCell(int rowIndex, int colIndex) {
-        return board[rowIndex][colIndex];
+    private Cell findCell(CellPosition cellPosition) {
+        return board[cellPosition.getRowIndex()][cellPosition.getColIndex()];
     }
 
     private int countNearByLandMines(int row, int col) {
