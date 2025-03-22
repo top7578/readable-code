@@ -47,4 +47,29 @@ public class CellPosition {
     public int getColIndex() {
         return this.colIndex;
     }
+
+    public boolean canCalculatePositionBy(RelativePosition relativePosition) {
+        return this.rowIndex + relativePosition.getDeltaRow() >= 0
+            && this.colIndex + relativePosition.getDeltaCol() >= 0;
+    }
+
+    public CellPosition calculatePositionBy(RelativePosition relativePosition) {
+        if(this.canCalculatePositionBy(relativePosition)) {
+            return CellPosition.of(
+                this.rowIndex + relativePosition.getDeltaRow(),
+                this.colIndex + relativePosition.getDeltaCol()
+            );
+        }
+        throw new IllegalArgumentException("움직일 수 있는 좌표가 아닙니다.");
+    }
+
+    public boolean isRowIndexLessThan(int rowIndex) {
+        return this.rowIndex < rowIndex;
+    }
+
+    public boolean isColIndexLessThan(int colIndex) {
+        return this.colIndex < colIndex;
+    }
+
+
 }
