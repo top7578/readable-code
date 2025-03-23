@@ -1,7 +1,5 @@
 package cleancode.minesweeper.tobe;
 
-import cleancode.minesweeper.tobe.position.CellPosition;
-
 public class BoardIndexConverter {
 
     private static final char BASE_CHAR_FOR_COL = 'a';
